@@ -20,4 +20,19 @@ class Cashier
         $this->shop = new Shop();
         $this->products = $this->shop.getProducts();
     }
+	
+	public function getShop()
+	{
+		return $this->shop;
+	}
+	
+	public function getBasket()
+	{
+		return $this->basket;
+	}
+	
+	public function getProducts()
+	{
+		return $this->products;
+	}
 }

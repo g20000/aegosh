@@ -8,5 +8,15 @@
  */
 class Discount
 {
-
+	private $discount;
+	
+	public function Discount($discount)
+	{
+		$this->discount = $discount;
+	}
+	
+	public function getDiscount()
+	{
+		return $this->discount;
+	}
 }

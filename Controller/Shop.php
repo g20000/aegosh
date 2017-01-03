@@ -6,9 +6,14 @@
  * Date: 04.12.2016
  * Time: 23:24
  */
+ 
+include 'QuantityDiscount.php';
+include 'ProductsCollectionDiscount.php';
+ 
 class Shop
 {
     private $products;
+	private $discounts;
 
     public function Shop()
     {
@@ -29,10 +34,25 @@ class Shop
             "Meat" => new Product("Meat", 4, 3),
             "Butter" => new Product("Butter", 4, 3)
         ];
+		
+		$this->discounts = array(
+            new ProductsCollectionDiscount(array("Bread", "Milk"), 0.1),
+            new ProductsCollectionDiscount(array("Steel water", "Snikers"), 0.05),
+            new ProductsCollectionDiscount(array("Snikers", "Mars", "Pasta"), 0.05),
+            new ProductsCollectionDiscount(array("Steel water", 4, 3)),
+            "Snikers" => new Product("Snikers", 4, 3),
+            "Mars" => new Product("Mars", 4, 3),
+            "Pasta" => new Product("Pasta", 4, 3)
+        );
     }
 
     public function getProducts()
     {
         return $this->products;
+    }
+	
+	public function getDiscounts()
+    {
+        return $this->discounts;
     }
 }
