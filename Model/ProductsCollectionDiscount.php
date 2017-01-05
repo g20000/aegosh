@@ -7,15 +7,16 @@
  * Time: 23:21
  */
  
-include 'Discount.php'
+include 'Discount.php';
  
 class ProductsCollectionDiscount extends Discount
 {
 	private $productCollection;
 	
 	public function ProductsCollectionDiscount($productCollection, $discount) {
+        parent::Discount($discount);
         $this->productCollection = $productCollection;
-		$this->discount = $discount;
+		$this->setDiscount($discount);
     }
 	
 	public function getProductCollection()
@@ -23,5 +24,3 @@ class ProductsCollectionDiscount extends Discount
 		return $this->productCollection;
 	}
 }
-
-?>

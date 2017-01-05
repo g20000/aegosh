@@ -19,4 +19,9 @@ class Discount
 	{
 		return $this->discount;
 	}
+
+	public function setDiscount($discount)
+    {
+        $this->discount = $discount;
+    }
 }

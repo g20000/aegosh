@@ -7,8 +7,9 @@
  * Time: 23:24
  */
  
-include 'QuantityDiscount.php';
-include 'ProductsCollectionDiscount.php';
+include '..\Model\QuantityDiscount.php';
+include '..\Model\ProductsCollectionDiscount.php';
+include '..\Model\ProductInCollectionDiscount.php';
  
 class Shop
 {
@@ -39,10 +40,10 @@ class Shop
             new ProductsCollectionDiscount(array("Bread", "Milk"), 0.1),
             new ProductsCollectionDiscount(array("Steel water", "Snikers"), 0.05),
             new ProductsCollectionDiscount(array("Snikers", "Mars", "Pasta"), 0.05),
-            new ProductsCollectionDiscount(array("Steel water", 4, 3)),
-            "Snikers" => new Product("Snikers", 4, 3),
-            "Mars" => new Product("Mars", 4, 3),
-            "Pasta" => new Product("Pasta", 4, 3)
+            new ProductInCollectionDiscount(array("Bread"), array("Package", "Sausage", "Tortillia"), 0.05),
+            new QuantityDiscount(5, 0.2),
+            new QuantityDiscount(4, 0.1),
+            new QuantityDiscount(3, 0.05)
         );
     }
 

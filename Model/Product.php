@@ -20,16 +20,16 @@ class Product
 	
 	public function getProductName()
 	{
-		return $this->$name;
+		return $this->name;
 	}
 	
 	public function getProductPrice()
 	{
-		return $this->$price;
+		return $this->price;
 	}
 	
 	public function getProductQuantity()
 	{
-		return $this->$quantity;
+		return $this->quantity;
 	}
 }
