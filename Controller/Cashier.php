@@ -135,8 +135,14 @@ class Cashier
         $availableProductsAmount = 0;
         foreach($products as $product)
         {
-            $product->getProductQuantity();
+            $productItem = $this->castObjectToProduct($product);
+            $productItem->getProductQuantity();
         }
+    }
+
+    private function castObjectToProduct(Product $product)
+    {
+        return $product;
     }
 
 	public function getShop()
