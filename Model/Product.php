@@ -32,4 +32,12 @@ class Product
 	{
 		return $this->quantity;
 	}
+
+    /**
+     * @param mixed $quantity
+     */
+    public function setQuantity($quantity)
+    {
+        $this->quantity = $quantity;
+    }
 }
