@@ -114,15 +114,30 @@ class Cashier
     private function makeQuantityDiscount(QuantityDiscount $discount, $products)
     {
         $sumForProducts = 0;
-        switch ($this->availableProductsAmount($products)) {
-            case 5:
-                break;
-            case 4:
-                break;
-            case 3:
-                break;
-            default:
-                break;
+        $quantityProductForDiscount = $discount->getQuantityProductForDiscount();
+        if ($this->availableProductsAmount($products) >= $quantityProductForDiscount)
+        {
+            $availableProductsCounter = 0;
+            foreach ($products as $product)
+            {
+                $productItem = $this->castObjectToProduct($product);
+                if ($productItem->getProductQuantity() > 0)
+                {
+                    if ($availableProductsCounter == $quantityProductForDiscount) {
+                        break;
+                    }
+                    while ($productItem->getProductQuantity() > 0) {
+                        $decreasedProductQuantity = $productItem->getProductQuantity() - 1;
+                        $productItem->setQuantity($decreasedProductQuantity);
+                        $sumForProducts += $productItem->getProductPrice();
+                        $availableProductsCounter += 1;
+                        if ($availableProductsCounter == $quantityProductForDiscount)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
         }
     }
 

@@ -16,4 +16,12 @@ class QuantityDiscount extends Discount
 	{
 		return $this->quantityProductForDiscount;
 	}
+
+    /**
+     * @param mixed $quantityProductForDiscount
+     */
+    public function setQuantityProductForDiscount($quantityProductForDiscount)
+    {
+        $this->quantityProductForDiscount = $quantityProductForDiscount;
+    }
 }
