@@ -42,31 +42,45 @@ class Cashier
 		$this->discounts = $this->shop->getDiscounts();
     }
 
-    private function countProductSum()
+    public function countTotalProductPrice()
     {
+        return $this->makeDiscountIfAvailable($this->basket, $this->discounts) + $this->countProductSum($this->basket);
+    }
 
+    private function countProductSum($products)
+    {
+        $sumForProducts = 0;
+        foreach ($products as $product)
+        {
+            $productItem = $this->castObjectToProduct($product);
+            $sumForProducts += $productItem->getProductPrice();
+        }
+        return $sumForProducts;
     }
 
     private function makeDiscountIfAvailable($products, $discounts)
     {
+        $sumForProducts = 0;
         foreach ($discounts as &$discount) {
             if (($discount instanceof ProductsCollectionDiscount) && ($this->isAvailableDiscountForProductCollection($discount, $products)))
             {
-                $this->makeDiscountForProductsCollection($discount, $products);
+                $sumForProducts += $this->makeDiscountForProductsCollection($discount, $products);
             }
 
             if (($discount instanceof ProductInCollectionDiscount) && ($this->isAvailableDiscountForProductInCollection($discount, $products)))
             {
-                $this->makeDiscountForProductInCollection($discount, $products);
+                $sumForProducts += $this->makeDiscountForProductInCollection($discount, $products);
             }
 
             if (($discount instanceof QuantityDiscount) && ($this->isAvailableQuantityDiscount($products)))
             {
-                $this->makeQuantityDiscount($discount, $products);
+                $sumForProducts += $this->makeQuantityDiscount($discount, $products);
                 break;
             }
         }
         unset($discount);
+
+        return $sumForProducts;
     }
 
     private function makeDiscountForProductsCollection(ProductsCollectionDiscount $discount, $products)
@@ -81,7 +95,7 @@ class Cashier
         }
         $sumForProducts = $sumForProducts - ($sumForProducts * $discount);
 
-        return $this->sum + $sumForProducts;
+        return $sumForProducts;
     }
 
     private function makeDiscountForProductInCollection(ProductInCollectionDiscount $discount, $products)
@@ -108,21 +122,18 @@ class Cashier
 
         $sumForProducts = $sumForProducts - ($sumForProducts * $discount);
 
-        return $this->sum + $sumForProducts;
+        return $sumForProducts;
     }
 
     private function makeQuantityDiscount(QuantityDiscount $discount, $products)
     {
         $sumForProducts = 0;
         $quantityProductForDiscount = $discount->getQuantityProductForDiscount();
-        if ($this->availableProductsAmount($products) >= $quantityProductForDiscount)
-        {
+        if ($this->availableProductsAmount($products) >= $quantityProductForDiscount) {
             $availableProductsCounter = 0;
-            foreach ($products as $product)
-            {
+            foreach ($products as $product) {
                 $productItem = $this->castObjectToProduct($product);
-                if ($productItem->getProductQuantity() > 0)
-                {
+                if ($productItem->getProductQuantity() > 0) {
                     if ($availableProductsCounter == $quantityProductForDiscount) {
                         break;
                     }
@@ -131,14 +142,17 @@ class Cashier
                         $productItem->setQuantity($decreasedProductQuantity);
                         $sumForProducts += $productItem->getProductPrice();
                         $availableProductsCounter += 1;
-                        if ($availableProductsCounter == $quantityProductForDiscount)
-                        {
+                        if ($availableProductsCounter == $quantityProductForDiscount) {
                             break;
                         }
                     }
                 }
             }
+
+            $sumForProducts = $sumForProducts - ($sumForProducts * $discount->getDiscount());
+            return $sumForProducts;
         }
+        return $sumForProducts;
     }
 
     private function isAvailableDiscountForProductCollection(ProductsCollectionDiscount $discount, $products)
